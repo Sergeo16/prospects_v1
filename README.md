@@ -132,9 +132,8 @@ npm run dev
 npm run build
 npm start
 
-# Mode production accessible sur le réseau
-npm run build
-npm run start:network
+# Mode production accessible sur le réseau (une seule commande)
+npm run build:start
 ```
 
 > **Note** : Pour arrêter PostgreSQL, utilisez `docker-compose down`. Pour arrêter et supprimer les données, utilisez `docker-compose down -v` (⚠️ attention : cela supprimera toutes les données).
@@ -188,10 +187,13 @@ prospects_v1/
 ## 🔐 Accès Admin
 
 1. Connectez-vous sur `/ss91/login`
-2. Utilisez les identifiants définis dans `.env` :
-   - Email : `ADMIN_EMAIL`
-   - Password : `ADMIN_PASSWORD`
-3. Vous serez redirigé vers le changement de mot de passe si c'est la première connexion
+2. Utilisez les identifiants définis dans `.env` (lignes `ADMIN_EMAIL` et `ADMIN_PASSWORD`)
+3. Les identifiants sont affichés dans le terminal lors du démarrage avec `npm run build:start` ou `npm run dev:network`
+4. Si la connexion échoue :
+   - Vérifiez que `ADMIN_EMAIL` et `ADMIN_PASSWORD` sont bien définis dans `.env`
+   - Exécutez `npm run db:seed` pour créer/réinitialiser l'admin
+   - Vérifiez que la base de données est accessible (PostgreSQL démarré)
+5. Vous serez redirigé vers le changement de mot de passe si c'est la première connexion
 
 ## 🎯 Utilisation
 
@@ -248,6 +250,7 @@ npm run build
 # Production
 npm start                # Localhost uniquement
 npm run start:network    # Accessible sur le réseau
+npm run build:start      # 🚀 Build + Start sur réseau (une seule commande)
 
 # Base de données
 npm run db:push          # Push schema sans migration

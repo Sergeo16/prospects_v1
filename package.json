@@ -8,6 +8,7 @@
     "start": "next start",
     "start:network": "next start -H 0.0.0.0",
     "build": "prisma generate && next build",
+    "build:start": "bash scripts/build-start.sh",
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
