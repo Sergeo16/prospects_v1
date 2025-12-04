@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import Navigation from '@/components/Navigation'
 import ToastProvider from '@/components/ToastProvider'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,10 +18,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" data-theme="retro">
+    <html lang="fr" data-theme="retro" suppressHydrationWarning>
       <body className={inter.className}>
-        <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">{children}</main>
-        <ToastProvider />
+        <ThemeProvider>
+          <Navigation />
+          <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 pt-20 sm:pt-24 animate-fade-in">
+            {children}
+          </main>
+          <ToastProvider />
+        </ThemeProvider>
       </body>
     </html>
   )

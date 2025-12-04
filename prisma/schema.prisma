@@ -109,6 +109,10 @@ model NeedAnalysis {
   estimatedDuration   String?
   estimatedBudgetRange String?
   risks               String?
+  priorityScore       Int?            @default(50)
+  isUrgent            Boolean         @default(false)
+  recommendations     String?
+  technicalSpecs      String?
   createdAt           DateTime        @default(now())
 
   need Need @relation(fields: [needId], references: [id], onDelete: Cascade)

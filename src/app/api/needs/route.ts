@@ -3,6 +3,16 @@ import { getAuthUser } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { saveFile, getFileType } from '@/lib/storage'
 import { analyzeNeed } from '@/lib/ai/analyzeNeed'
+import {
+  rateLimit,
+  detectSpam,
+  validateHoneypot,
+  validateEmail,
+  validatePhone,
+  validateFileUpload,
+  getClientIP,
+  isBot,
+} from '@/lib/security'
 
 export async function GET(request: NextRequest) {
   try {
@@ -67,7 +77,49 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Security checks
+    const ip = getClientIP(request)
+    
+    // Rate limiting: 10 requests per 15 minutes per IP
+    const rateLimitResult = await rateLimit(request, {
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      maxRequests: 10,
+      identifier: ip,
+    })
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          error: 'Trop de requêtes. Veuillez réessayer plus tard.',
+          resetTime: rateLimitResult.resetTime,
+        },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': '10',
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': rateLimitResult.resetTime.toString(),
+            'Retry-After': Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString(),
+          },
+        }
+      )
+    }
+
+    // Bot detection
+    if (isBot(request)) {
+      return NextResponse.json(
+        { error: 'Accès non autorisé' },
+        { status: 403 }
+      )
+    }
+
     const formData = await request.formData()
+
+    // Honeypot check
+    if (!validateHoneypot(formData)) {
+      // Silently reject (don't reveal it's a honeypot)
+      return NextResponse.json({ id: 'fake-id', success: true })
+    }
 
     const clientName = formData.get('clientName') as string
     const clientEmail = formData.get('clientEmail') as string | null
@@ -83,7 +135,66 @@ export async function POST(request: NextRequest) {
     const priority = (formData.get('priority') as 'LOW' | 'MEDIUM' | 'HIGH') || 'MEDIUM'
     const language = formData.get('language') as string | null
 
+    // Validation
+    if (!clientName || clientName.trim().length < 2) {
+      return NextResponse.json(
+        { error: 'Le nom doit contenir au moins 2 caractères' },
+        { status: 400 }
+      )
+    }
+
+    if (clientName.length > 200) {
+      return NextResponse.json(
+        { error: 'Le nom est trop long (max 200 caractères)' },
+        { status: 400 }
+      )
+    }
+
+    // Spam detection
+    const combinedText = `${problemDescription} ${currentSituation} ${desiredSolution}`.toLowerCase()
+    if (detectSpam(combinedText)) {
+      return NextResponse.json(
+        { error: 'Le contenu semble suspect. Veuillez réessayer avec un texte plus détaillé.' },
+        { status: 400 }
+      )
+    }
+
+    // Email validation
+    if (clientEmail) {
+      const emailValidation = validateEmail(clientEmail)
+      if (!emailValidation.valid) {
+        return NextResponse.json(
+          { error: emailValidation.reason },
+          { status: 400 }
+        )
+      }
+    }
+
+    // Phone validation
+    if (clientPhone) {
+      const phoneValidation = validatePhone(clientPhone)
+      if (!phoneValidation.valid) {
+        return NextResponse.json(
+          { error: phoneValidation.reason },
+          { status: 400 }
+        )
+      }
+    }
+
     const files = formData.getAll('files') as File[]
+
+    // Validate files
+    for (const file of files) {
+      if (file.size > 0) {
+        const fileValidation = validateFileUpload(file)
+        if (!fileValidation.valid) {
+          return NextResponse.json(
+            { error: fileValidation.reason },
+            { status: 400 }
+          )
+        }
+      }
+    }
 
     // Create Need
     const need = await prisma.need.create({
@@ -129,7 +240,16 @@ export async function POST(request: NextRequest) {
       console.error('Error analyzing need:', error)
     })
 
-    return NextResponse.json({ id: need.id, success: true })
+    return NextResponse.json(
+      { id: need.id, success: true },
+      {
+        headers: {
+          'X-RateLimit-Limit': '10',
+          'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+          'X-RateLimit-Reset': rateLimitResult.resetTime.toString(),
+        },
+      }
+    )
   } catch (error) {
     console.error('Error creating need:', error)
     return NextResponse.json(

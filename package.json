@@ -13,7 +13,10 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:reset-admin": "tsx scripts/reset-admin.ts",
+    "db:create-admin": "tsx scripts/create-admin.ts",
+    "check-env": "node scripts/check-env.js"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",

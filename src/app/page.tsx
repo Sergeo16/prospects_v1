@@ -135,26 +135,30 @@ export default function HomePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-0 pb-8 sm:pb-12">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">Décrivez votre besoin</h1>
+      <div className="text-center mb-8 animate-fade-in">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 gradient-text">
+          Décrivez votre besoin
+        </h1>
+        <p className="text-lg text-base-content/70 max-w-2xl mx-auto">
+          Notre IA analysera votre demande et vous proposera une solution adaptée
+        </p>
+      </div>
 
       <form 
         onSubmit={handleSubmit} 
-        className="card bg-base-100 shadow-xl transition-all duration-300 hover:outline hover:outline-[4px] hover:outline-accent hover:outline-offset-2"
+        className="card bg-base-100 shadow-2xl transition-all duration-500 hover:shadow-3xl border border-base-300 animate-scale-in"
       >
-        <div className="card-body p-4 sm:p-6 pb-8">
-          <p className="text-base-content/70 mb-6 text-center">
-            Notre IA analysera votre demande et vous proposera une solution adaptée
-          </p>
+        <div className="card-body p-6 sm:p-8 pb-10">
 
           {/* Informations client */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="form-control">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+            <div className="form-control w-full animate-fade-in" style={{ animationDelay: '0.1s' }}>
               <label className="label">
-                <span className="label-text">Nom complet *</span>
+                <span className="label-text font-semibold">Nom complet *</span>
               </label>
               <input
                 type="text"
-                className="input input-bordered"
+                className="input input-bordered w-full transition-all duration-200 focus:input-primary focus:scale-[1.02]"
                 placeholder="Saisissez votre nom complet"
                 value={formData.clientName}
                 onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
@@ -162,39 +166,39 @@ export default function HomePage() {
               />
             </div>
 
-            <div className="form-control">
+            <div className="form-control w-full animate-fade-in" style={{ animationDelay: '0.2s' }}>
               <label className="label">
-                <span className="label-text">Email</span>
+                <span className="label-text font-semibold">Email</span>
               </label>
               <input
                 type="email"
-                className="input input-bordered"
+                className="input input-bordered w-full transition-all duration-200 focus:input-primary focus:scale-[1.02]"
                 placeholder="email@example.com"
                 value={formData.clientEmail}
                 onChange={(e) => setFormData({ ...formData, clientEmail: e.target.value })}
               />
             </div>
 
-            <div className="form-control">
+            <div className="form-control w-full animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <label className="label">
-                <span className="label-text">Téléphone</span>
+                <span className="label-text font-semibold">Téléphone</span>
               </label>
               <input
                 type="tel"
-                className="input input-bordered"
+                className="input input-bordered w-full transition-all duration-200 focus:input-primary focus:scale-[1.02]"
                 placeholder="+33 6 12 34 56 78"
                 value={formData.clientPhone}
                 onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
               />
             </div>
 
-            <div className="form-control">
+            <div className="form-control w-full animate-fade-in" style={{ animationDelay: '0.4s' }}>
               <label className="label">
-                <span className="label-text">Entreprise</span>
+                <span className="label-text font-semibold">Entreprise</span>
               </label>
               <input
                 type="text"
-                className="input input-bordered"
+                className="input input-bordered w-full transition-all duration-200 focus:input-primary focus:scale-[1.02]"
                 placeholder="Nom de l'entreprise"
                 value={formData.companyName}
                 onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
@@ -203,58 +207,73 @@ export default function HomePage() {
           </div>
 
           {/* Problème */}
-          <div className="form-control">
+          <div className="form-control w-full mt-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
             <label className="label">
-              <span className="label-text">Problème à résoudre *</span>
+              <span className="label-text font-semibold text-lg">Problème à résoudre *</span>
             </label>
             <textarea
-              className="textarea textarea-bordered"
+              className="textarea textarea-bordered w-full min-h-[140px] resize-y transition-all duration-200 focus:textarea-primary focus:scale-[1.01]"
               placeholder="Décrivez le problème que vous souhaitez résoudre..."
               rows={4}
               value={formData.problemDescription}
               onChange={(e) => setFormData({ ...formData, problemDescription: e.target.value })}
               required
             />
+            <label className="label">
+              <span className="label-text-alt text-base-content/60">
+                {formData.problemDescription.length} caractères
+              </span>
+            </label>
           </div>
 
           {/* Situation actuelle */}
-          <div className="form-control">
+          <div className="form-control w-full mt-6 animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <label className="label">
-              <span className="label-text">Situation actuelle *</span>
+              <span className="label-text font-semibold text-lg">Situation actuelle *</span>
             </label>
             <textarea
-              className="textarea textarea-bordered"
+              className="textarea textarea-bordered w-full min-h-[140px] resize-y transition-all duration-200 focus:textarea-primary focus:scale-[1.01]"
               placeholder="Comment gérez-vous actuellement ce problème ?"
               rows={4}
               value={formData.currentSituation}
               onChange={(e) => setFormData({ ...formData, currentSituation: e.target.value })}
               required
             />
+            <label className="label">
+              <span className="label-text-alt text-base-content/60">
+                {formData.currentSituation.length} caractères
+              </span>
+            </label>
           </div>
 
           {/* Solution souhaitée */}
-          <div className="form-control">
+          <div className="form-control w-full mt-6 animate-fade-in" style={{ animationDelay: '0.7s' }}>
             <label className="label">
-              <span className="label-text">Solution souhaitée *</span>
+              <span className="label-text font-semibold text-lg">Solution souhaitée *</span>
             </label>
             <textarea
-              className="textarea textarea-bordered"
+              className="textarea textarea-bordered w-full min-h-[140px] resize-y transition-all duration-200 focus:textarea-primary focus:scale-[1.01]"
               placeholder="Quelle solution idéale imaginez-vous ?"
               rows={4}
               value={formData.desiredSolution}
               onChange={(e) => setFormData({ ...formData, desiredSolution: e.target.value })}
               required
             />
+            <label className="label">
+              <span className="label-text-alt text-base-content/60">
+                {formData.desiredSolution.length} caractères
+              </span>
+            </label>
           </div>
 
           {/* Références */}
-          <div className="form-control">
+          <div className="form-control w-full mt-4">
             <label className="label">
               <span className="label-text">Applications similaires (références)</span>
             </label>
             <input
               type="text"
-              className="input input-bordered"
+              className="input input-bordered w-full"
               placeholder="Ex: Airbnb, Uber, Notion..."
               value={formData.knownAppReferences}
               onChange={(e) => setFormData({ ...formData, knownAppReferences: e.target.value })}
@@ -262,14 +281,14 @@ export default function HomePage() {
           </div>
 
           {/* Budget et délai */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="form-control">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Budget minimum (€)</span>
               </label>
               <input
                 type="number"
-                className="input input-bordered"
+                className="input input-bordered w-full"
                 placeholder="0"
                 min="0"
                 value={formData.budgetMin}
@@ -279,13 +298,13 @@ export default function HomePage() {
               />
             </div>
 
-            <div className="form-control">
+            <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Budget maximum (€)</span>
               </label>
               <input
                 type="number"
-                className="input input-bordered"
+                className="input input-bordered w-full"
                 placeholder="0"
                 min="0"
                 value={formData.budgetMax}
@@ -295,25 +314,25 @@ export default function HomePage() {
               />
             </div>
 
-            <div className="form-control">
+            <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Délai souhaité</span>
               </label>
               <input
                 type="text"
-                className="input input-bordered"
+                className="input input-bordered w-full"
                 placeholder="Ex: 3 mois, ASAP..."
                 value={formData.deadlinePreference}
                 onChange={(e) => setFormData({ ...formData, deadlinePreference: e.target.value })}
               />
             </div>
 
-            <div className="form-control">
+            <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Priorité</span>
               </label>
               <select
-                className="select select-bordered"
+                className="select select-bordered w-full"
                 value={formData.priority}
                 onChange={(e) => setFormData({ ...formData, priority: e.target.value as any })}
               >
@@ -323,12 +342,12 @@ export default function HomePage() {
               </select>
             </div>
 
-            <div className="form-control sm:col-span-2">
+            <div className="form-control w-full sm:col-span-2">
               <label className="label">
                 <span className="label-text">Langue</span>
               </label>
               <select
-                className="select select-bordered"
+                className="select select-bordered w-full"
                 value={formData.language}
                 onChange={(e) => setFormData({ ...formData, language: e.target.value })}
               >
@@ -341,17 +360,27 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* Honeypot field (hidden, for bot detection) */}
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            className="hidden"
+            style={{ position: 'absolute', left: '-9999px' }}
+          />
+
           {/* Upload fichiers */}
-          <div className="mt-4">
+          <div className="mt-6 animate-fade-in" style={{ animationDelay: '0.8s' }}>
             <FileUploader onFilesChange={setFiles} />
           </div>
 
           {/* Boutons */}
-          <div className="form-control mt-6">
-            <div className="flex gap-4">
+          <div className="form-control mt-8">
+            <div className="flex flex-col sm:flex-row gap-4">
               <button
                 type="button"
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg 
+                className="flex-1 btn btn-outline btn-error text-base font-semibold py-3 px-6 
                           transition-all duration-300 transform hover:scale-105 hover:shadow-lg 
                           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 onClick={handleCancel}
@@ -361,12 +390,25 @@ export default function HomePage() {
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg 
+                className="flex-1 btn btn-primary text-base font-semibold py-3 px-6 
                           transition-all duration-300 transform hover:scale-105 hover:shadow-lg 
-                          active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                          active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                          relative overflow-hidden group"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Envoi...' : 'Soumettre'}
+                <span className="relative z-10">
+                  {isSubmitting ? (
+                    <>
+                      <span className="loading loading-spinner loading-sm mr-2"></span>
+                      Envoi en cours...
+                    </>
+                  ) : (
+                    'Soumettre'
+                  )}
+                </span>
+                {!isSubmitting && (
+                  <span className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                )}
               </button>
             </div>
           </div>
