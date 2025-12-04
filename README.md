@@ -31,7 +31,7 @@ Application web complète pour recueillir les besoins réels de clients potentie
 
 ## 🎨 Design
 
-L'application utilise **DaisyUI** avec le thème **Cyberpunk** pour une interface moderne et futuriste avec des couleurs néon caractéristiques.
+L'application utilise **DaisyUI** avec le thème **Retro** pour une interface avec un fond beige/or caractéristique.
 
 ## 🛠️ Installation
 
@@ -320,12 +320,86 @@ docker-compose ps        # Vérifier le statut
 
 - **Next.js 14** (App Router)
 - **TypeScript**
-- **Tailwind CSS** + **DaisyUI** (thème Cyberpunk)
+- **Tailwind CSS** + **DaisyUI** (thème Retro)
 - **Prisma** (ORM)
 - **PostgreSQL**
 - **OpenAI API** (GPT-4)
 - **JWT** (Authentification)
 - **bcryptjs** (Hashage)
+
+## 🔄 Synchronisation Git (Local → Distant)
+
+### ⚠️ Attention : Force Push
+
+Pour synchroniser le dépôt distant avec votre version locale (écraser l'historique distant), utilisez :
+
+```bash
+# 1. Vérifier l'état actuel
+git status
+
+# 2. Ajouter tous les changements
+git add .
+
+# 3. Créer un commit (si nécessaire)
+git commit -m "Description des modifications"
+
+# 4. FORCE PUSH - Écrase le dépôt distant avec votre version locale
+git push --force origin main
+```
+
+**OU** si vous êtes sur une autre branche :
+
+```bash
+git push --force origin <nom-de-la-branche>
+```
+
+### ⚠️ Avertissements Importants
+
+1. **`--force` écrase l'historique distant** : Toutes les modifications qui existent sur le dépôt distant mais pas en local seront **perdues définitivement**.
+2. **Ne jamais faire de force push sur une branche partagée** : Si d'autres personnes travaillent sur le projet, cela peut causer des conflits majeurs.
+3. **Sauvegardez avant** : Assurez-vous d'avoir une sauvegarde de votre code avant d'utiliser `--force`.
+
+### 🔒 Alternative Sécurisée (Recommandée)
+
+Si vous travaillez seul ou que vous êtes sûr de vouloir écraser le distant :
+
+```bash
+# Vérifier les différences avant
+git fetch origin
+git log HEAD..origin/main  # Voir les commits qui seront perdus
+
+# Force push uniquement si vous êtes sûr
+git push --force origin main
+```
+
+### 📝 Workflow Recommandé
+
+```bash
+# 1. Vérifier l'état
+git status
+
+# 2. Ajouter les fichiers modifiés
+git add .
+
+# 3. Commit avec un message descriptif
+git commit -m "feat: mise à jour du design avec thème Retro DaisyUI"
+
+# 4. Push normal (si pas de conflit)
+git push origin main
+
+# OU force push si nécessaire (avec précaution)
+git push --force origin main
+```
+
+### 🔍 Vérification Post-Push
+
+```bash
+# Vérifier que le push a réussi
+git log --oneline -5
+
+# Vérifier la synchronisation
+git status
+```
 
 ## 📄 Licence
 

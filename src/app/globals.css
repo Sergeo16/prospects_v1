@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-base-100 text-base-content;
-}
+/* Les couleurs sont gérées par DaisyUI avec data-theme="retro" */
+/* Le thème retro a un fond couleur or/beige caractéristique */
 
